@@ -28,3 +28,44 @@ plot(pressure)
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+
+```{r packages, echo=TRUE, message=TRUE}
+
+library(tidyverse)
+library(terra)
+library(sf)
+library(tmap)
+library(fs)
+```
+
+```{r load data}
+
+data_dir <- "erie_raster_ex"
+images_dir <- file.path(data_dir, "images")
+bounds_dir <- file.path(data_dir, "bounds")
+
+```
+
+
+#Task 1 Data Management and Reprocessing 
+```{r list_files, echo=TRUE, message=TRUE}
+
+raster_files <- fs::dir_ls(images_dir, regexp = "\\.tiff$")
+
+raster_files
+length(raster_files)
+
+```
+
+
+
+
+
+
+
+
+
+
+
