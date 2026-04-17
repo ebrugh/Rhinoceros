@@ -66,7 +66,7 @@ length(raster_files)
 
 r1 <- terra::rast(raster_files[1])
 
-terra::crs(r1) #WGS 84
+terra::crs(r1) #WGS 84 UTM zone 17N
 terra::ext(r1) #xmin= 281282.934996, xmax= 694382.934996, ymin= 4572608.997997, ymax= 4764308.997997 
 terra::res(r1) #300x300 
 terra::nlyr(r1) #1
@@ -104,7 +104,29 @@ terra::global(r1_clean, c("min", "max"), na.rm = TRUE) #min = 1, max = 249
 #Task 1.4
 ```{r}
 
+dn_to_ci <- function(r){
+  ci_r <- 10^(((3/250) * r) - 4.2)
+  return(ci_r)
+}
+
+r1_ci <- dn_to_ci(r1_clean)
+
+terra::global(r1_ci, c("min", "max"), na.rm = TRUE)
+
 ```
+
+#T1 Questions
+
+
+
+
+
+
+
+
+
+
+
 
 
 
