@@ -116,8 +116,13 @@ terra::global(r1_ci, c("min", "max"), na.rm = TRUE)
 ```
 
 #T1 Questions
+1.1 The CRS is WGS84 UTM Zone17. It's projected with linear units, so converting to square kilometers would not require a re-projection. 
 
+1.2 Sentinel values like the clouds are not real data and have to be removed so that they don't get converted to look like real algal bloom data.
 
+1.3 Yes it kept the lower boundary of 0 and upper boundary of 250 in the new classification so that the sentinel values could be accuratley re-classified as NA.
+
+#Task 2
 
 
 
