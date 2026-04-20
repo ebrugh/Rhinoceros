@@ -120,11 +120,56 @@ terra::global(r1_ci, c("min", "max"), na.rm = TRUE)
 
 1.2 Sentinel values like the clouds are not real data and have to be removed so that they don't get converted to look like real algal bloom data.
 
-1.3 Yes it kept the lower boundary of 0 and upper boundary of 250 in the new classification so that the sentinel values could be accuratley re-classified as NA.
+1.3 Yes it kept the lower boundary of 0 and upper boundary of 250 in the new classification so that the sentinel values could be accurately re-classified as NA.
 
 #Task 2
+```{r load}
 
+sandusky <- sf::read_sf(file.path(bounds_dir, "bb_erie_sandusky.shp"))
 
+sf::st_crs(sandusky)
+
+sandusky <- sf::st_transform(sandusky, 32617)
+
+```
+
+#Task 2.2
+```{r}
+
+aug_16 <- terra::rast(file.path(images_dir, "ts_2017.0816_0822.L4.LE3.CIcyano.MAXIMUM_7day.tif"))
+
+aug_16_clean <- clean_cicyano(aug_16)
+aug_16_ci <- dn_to_ci(aug_16_clean)
+
+sandusky_crop <- terra::crop(aug_16_ci, sandusky)
+sandusky_0816 <- terra::mask(sandusky_crop, sandusky)
+
+```
+
+#Task 2.3
+```{r}
+
+terra::global(aug_16_ci, "mean", na.rm = TRUE) #0.0004572394
+terra::global(sandusky_0816, "mean", na.rm = TRUE) #0.0171323
+
+```
+
+#Task 2.4
+```{r map}
+
+tm_shape(sandusky_0816) +
+  tm_raster(
+    title = "CI Value") +
+  tm_layout(
+    title = "Cyanobacteria in Sandusky Bay \nAugust 16-22, 2017") +
+  tm_scalebar()
+
+```
+
+#Questions Task 2
+2.1 terra::crop reduces the data size and crops the raster into a box. terra_mask trims the shape to match the actual shape of sandusk bay and remove everything outside of that boundary. using only crop would leave excess data. 
+
+2.2 The bay differs from the full lake because the bay has increased input from rivers, it is shallower, and has a higher temperature (all of these contribute to cyanobacteria production) which can cause differing in cyanobacteria concentrations throughout the lake. It doesn't mean there is more or less concentration, it just shows the variablility throughtout the lake. 
 
 
 
