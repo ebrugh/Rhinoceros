@@ -64,13 +64,13 @@ length(raster_files)
 #Task 1.2
 ```{r}
 
-r1 <- terra::rast(raster_files[1])
+r <- terra::rast(raster_files[1])
 
-terra::crs(r1) #WGS 84 UTM zone 17N
-terra::ext(r1) #xmin= 281282.934996, xmax= 694382.934996, ymin= 4572608.997997, ymax= 4764308.997997 
-terra::res(r1) #300x300 
-terra::nlyr(r1) #1
-terra::global(r1, c("min", "max"), na.rm = TRUE) #min= 1, max= 252
+terra::crs(r) #WGS 84 UTM zone 17N
+terra::ext(r) #xmin= 281282.934996, xmax= 694382.934996, ymin= 4572608.997997, ymax= 4764308.997997 
+terra::res(r) #300x300 
+terra::nlyr(r) #1
+terra::global(r, c("min", "max"), na.rm = TRUE) #min= 1, max= 252
 
 ```
 
@@ -88,16 +88,16 @@ clean_cicyano <- function(r){
     ncol = 3,
     byrow = TRUE)
   
-  cleaned_r <- terra::classify(r1, rcl, right = NA, others = NULL)
+  cleaned_r <- terra::classify(r, rcl, right = NA, others = NULL)
   
   return(cleaned_r)
 }
   
 #test
-r1_clean <- clean_cicyano(r1)
+r_clean <- clean_cicyano(r)
 
-terra::global(r1, c("min", "max"), na.rm = TRUE)
-terra::global(r1_clean, c("min", "max"), na.rm = TRUE) #min = 1, max = 249
+terra::global(r, c("min", "max"), na.rm = TRUE)
+terra::global(r_clean, c("min", "max"), na.rm = TRUE) #min = 1, max = 249
 
 ```
 
@@ -109,9 +109,9 @@ dn_to_ci <- function(r){
   return(ci_r)
 }
 
-r1_ci <- dn_to_ci(r1_clean)
+r_ci <- dn_to_ci(r_clean)
 
-terra::global(r1_ci, c("min", "max"), na.rm = TRUE)
+terra::global(r_ci, c("min", "max"), na.rm = TRUE)
 
 ```
 
@@ -171,6 +171,24 @@ tm_shape(sandusky_0816) +
 
 2.2 The bay differs from the full lake because the bay has increased input from rivers, it is shallower, and has a higher temperature (all of these contribute to cyanobacteria production) which can cause differing in cyanobacteria concentrations throughout the lake. It doesn't mean there is more or less concentration, it just shows the variablility throughtout the lake. 
 
+
+#Task 3
+```{r}
+
+selected_files <- sort(raster_files)[c(1, 3, 5, 7)]
+
+raster_list <- lapply(selected_files, function(f) {
+  r <- terra::rast(f)
+  r_clean <- clean_cicyano(r)
+  r_ci <- dn_to_ci(r_clean)
+  return(r_ci)
+})
+
+r_stack <- terra::rast(raster_list)
+
+r_stack
+
+```
 
 
 
