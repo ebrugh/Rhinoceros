@@ -250,6 +250,45 @@ tm_shape(new_bloom) +
 
 3.2 The rasters must all be aligned on the same grid, if the layers are offset by different grids then the pixels will be overlapping and distort the stack. 
 
+#Task 4
+```{r}
+
+aoi_files <- fs::dir_ls(bounds_dir, regexp = "\\.shp$")
+
+aoi_list <- lapply(aoi_files, function(f) {
+  x <- sf::read_sf(f)
+  x$aoi_name <- basename(f)
+  x
+})
+
+all_aois <- dplyr::bind_rows(aoi_list)
+
+all_aois
+
+```
+
+#Task 4.1
+```{r}
+
+peak_raster <- r_stack[[2]]
+
+extract_df <- terra::extract(peak_raster, all_aois)
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
