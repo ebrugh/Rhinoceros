@@ -224,11 +224,31 @@ ggplot(mean_df, aes(x = date, y = mean_ci, group = 1)) +
 #Task 3.4
 ```{r}
 
+early_r <- r_stack[[1]]
+late_r <- r_stack[[4]]
+
+early_bin <- !is.na(early_r)
+late_bin <- !is.na(late_r)
+
+persistent_bloom <- early_bin & late_bin #both dates
+
+new_bloom <- (!early_bin) & late_bin
 
 
+tm_shape(persistent_bloom) +
+  tm_raster(col.legend = tm_legend(title = "Persistent Bloom")) +
+  tm_scalebar()
+
+tm_shape(new_bloom) +
+  tm_raster(col.legend = tm_legend(title = "New Bloom")) +
+  tm_scalebar
 
 ```
 
+#Task 3 Questions
+3.1 The mean CI value is the average of the entire lake so it can hide spatial patterns. Small areas with high concentrations of blooms could have little representation in the data due to large areas with low blooms. A better alternative might be measuring an area in the lake that has more blooms. 
+
+3.2 The rasters must all be aligned on the same grid, if the layers are offset by different grids then the pixels will be overlapping and distort the stack. 
 
 
 
