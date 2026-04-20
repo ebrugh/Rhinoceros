@@ -279,7 +279,12 @@ extract_df <- terra::extract(peak_raster, all_aois)
 
 
 
+#Lab Questions
+1
+Raster data is more focused on cell data. Each pixel has a value and it focusses on summarizing those values and transforming them. Vector data is geometry and attribute based using points, lines, and polygons. Vector data can be more of a "flexible" option in that raster data requires consistent grid alignment as well as resolution and extent. 
 
+2
+The data does agree because blooms are most intense in the late summer when the water temperatures are highest and the nutrient influx is higher (from runoff earlier in the season). The variability could be due to water mixing, but the late-summer max is typical. 
 
 
 
